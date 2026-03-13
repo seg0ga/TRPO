@@ -26,8 +26,8 @@ double test_gemm(int M,int N,int K,int num_threads){
     return duration<double>(end-start).count();}
 
 int main(){
-    cout<<"Тестирование производительности GEMM (OpenBLAS)\n";
-    int M=16000,N=16000,K=16000;
+    cout<<"Тестирование производительности GEMM (OpenBLAS) - double\n";
+    int M=3000, N=3000, K=3000;
     cout<<"Размер матриц: "<<M<<" x "<<N<<" x "<<K<< "\n\n";
     cout << "-----------------------------------------\n";
     cout << "| Потоки | Попытка |   Время (сек)     |\n";
