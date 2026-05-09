@@ -1,1 +1,3 @@
 /test_gemm_openblas
+/build/
+/artifacts/

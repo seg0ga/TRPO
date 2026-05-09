@@ -19,8 +19,7 @@ void gemm_parallel(int M,int N,int K,double alpha,const double* A,const double* 
             for (int i=start_row;i<end_row;++i){
                 for (int j=0;j<N;++j){
                     double sum=0;
-                    for (int k=0;k<K;++k){
-                        sum+=A[i*K+k]*B[k*N+j];}
+                    for (int k=0;k<K;++k){sum+=A[i*K+k]*B[k*N+j];}
                     C[i*N+j]=alpha*sum+beta*C[i*N+j];}}});}
 
     for (auto& t:threads){t.join();}}
@@ -36,26 +35,25 @@ double test_gemm(int M,int N,int K,int num_threads){
     double alpha=1.0,beta=0.0;
 
     auto start=high_resolution_clock::now();
-
     gemm_parallel(M,N,K,alpha,A.data(),B.data(),beta,C.data(),num_threads);
-
     auto end=high_resolution_clock::now();
+
     return duration<double>(end-start).count();}
 
 int main(){
-    cout<<"Моя реализация GEMM - ДВОЙНАЯ ТОЧНОСТЬ\n";
-    int M=3000, N=3000, K=3000;
-    cout<<"Размер матриц: "<<M<<" x "<<N<<" x "<<K<< "\n\n";
+    cout<<"My GEMM double\n";
+    int M=200, N=200, K=200;
+    int runs=3;
+    cout<<"Size: "<<M<<" x "<<N<<" x "<<K<<"\n\n";
     cout<<"-----------------------------------------\n";
-    cout<<"| Потоки | Попытка |   Время (сек)     |\n";
+    cout<<"| Threads | Run |      Time (sec)       |\n";
     cout<<"-----------------------------------------\n";
 
     int threads[]={1,2,4,8,16};
 
     for (int t:threads){
-        for (int run=0;run<10;run++){
+        for (int run=0;run<runs;run++){
             double time=test_gemm(M,N,K,t);
-            cout<<"|   "<<setw(2)<<t<<"    |   "<<setw(2)<<run+1<<"    | "
-                 <<fixed<<setprecision(3)<<setw(12)<<time<<"     |\n";}
-        cout<<"-----------------------------------------\n\n";}
-}
+            cout<<"|   "<<setw(2)<<t<<"    |  "<<setw(2)<<run+1<<" | "
+                <<fixed<<setprecision(3)<<setw(12)<<time<<"         |\n";}
+        cout<<"-----------------------------------------\n\n";}}
